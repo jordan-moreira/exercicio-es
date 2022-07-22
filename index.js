@@ -1,21 +1,21 @@
 const porta = 3003;
-const express = require("express");
-const bodyParser = require("body-parser");
+import express from "express";
+import { urlencoded } from "body-parser";
 const app = express();
-const db = require("./db");
+import { getProdutos, getProduto, salvarProduto, excluirProduto } from "./db";
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(urlencoded({ extended: true }));
 
 app.get("/produtos", (req, res, next) => {
-    res.send(db.getProdutos());
+    res.send(getProdutos());
 });
 
 app.get("/produtos/:id", (req, res, next) => {
-    res.send(db.getProduto(req.params.id));
+    res.send(getProduto(req.params.id));
 });
 
 app.post("/produtos", (req, res, next) => {
-    const produto = db.salvarProduto({
+    const produto = salvarProduto({
         nome: req.body.nome,
         preco: req.body.preco
     });
@@ -23,7 +23,7 @@ app.post("/produtos", (req, res, next) => {
 });
 
 app.put("/produtos/:id", (req, res, next) => {
-    const produto = db.salvarProduto({
+    const produto = salvarProduto({
         nome: req.body.nome,
         preco: req.body.preco,
         id: req.params.id
@@ -32,7 +32,7 @@ app.put("/produtos/:id", (req, res, next) => {
 });
 
 app.delete("/produtos/:id", (req, res, next) => {
-    const produto = db.excluirProduto(req.params.id);
+    const produto = excluirProduto(req.params.id);
     res.send(produto);
 });
 
